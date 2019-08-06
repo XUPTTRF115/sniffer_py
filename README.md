@@ -14,4 +14,4 @@ python - 网络嗅探器
 
 依赖
 ----
-    pypcap、pdkt
+    pypcap、pdkt、lxml
