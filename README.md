@@ -14,4 +14,6 @@ python - 网络嗅探器
 
 依赖
 ----
-    pypcap、pdkt、lxml
+    pypcap : 参考 [Python之pypcap库的安装及简单抓包工具的实现](https://blog.csdn.net/weixin_34342992/article/details/88004374?utm_source=app)
+    dpkt   : pip install dpkt
+    lxml
