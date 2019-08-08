@@ -29,9 +29,9 @@ parser.add_argument("-l", "--list", help="list all devices", action="store_true"
 args = parser.parse_args()
 #print(args)
 
-#列出设备
+#列出网卡接口
 def listdevs():
-    #通过pcap查找所有可用设备
+    #通过pcap查找所有可用的网卡接口
     devs = pcap.findalldevs()
     if (args.list != False):
         print("list the devices:")
@@ -42,13 +42,13 @@ def listdevs():
                 print(dev)
     return devs
 
-#选择启用设备
+#选择监听网卡
 def devstart():
-    #获取设备信息列表
+    #获取网卡接口信息列表
     devs = listdevs()
     dev = ''
 
-    #根据不同的用户输入参数run选择设备
+    #根据不同的用户输入参数run选择接口
     if(len(devs) == 0):
         print("start error , no device found.")
         return dev
@@ -65,8 +65,6 @@ def devstart():
             print("quit")
     return dev
 
-# pc.setfilter('tcp port 80')
-
 #主要监听程序
 def runlisten():
     try:
@@ -79,7 +77,7 @@ def runlisten():
             return False
         #默认给予10个有效包长度
         if(args.count == None):
-            args.count = 10        
+            args.count = 10
         #打开指定路径文件
         if(args.save != None):
             f = open(args.save,"w")
