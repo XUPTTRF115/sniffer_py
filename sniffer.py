@@ -101,7 +101,8 @@ def runlisten():
                             if(args.save != None):
                                 f.write("count:" + str(count) + "\t\n" + p.data.data.data + "\t\n\t\n\t\n")
                         elif(int(args.count) <= count):
-                            f.close()
+                            if(args.save != None):
+                                f.close()
                             print(str(args.count) + " results at above.")
                             break
     #当用户键盘打断
@@ -119,20 +120,38 @@ def runlisten():
 
 #开始爬取网站内容
 def doscraw(url):
-    #设置请求头
-    headers = {
-        "user-agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36",
-        "referer": url
-    }
-    
-    #发起请求得到响应
-    response = requests.get(url, headers=headers)
-    #设置响应编码格式
-    response.encoding='utf-8'
+    try:
+        #设置请求头
+        headers = {
+            "user-agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36",
+            "referer": url
+        }
+        
+        #发起请求得到响应
+        response = requests.get(url, headers=headers)
+        #设置响应编码格式
+        response.encoding='utf-8'
 
-    #筛选响应内容
-    #xml = etree.HTML(response.text)
-    print(response.text)
+        #转成xml文档
+        xml = etree.HTML(response.text)
+        result = response.text
+        if(args.xpath != None):
+            #筛选响应内容
+            result = xml.xpath(args.xpath)
+            #如果xpath没有匹配到内容
+            if(len(result) == 0):
+                print("the result is empty . please check your xpath")
+                return False
+            #如果匹配到了将Unicode编码文字转成utf-8格式输出
+            for item in result: 
+                print(item.encode('utf-8'))
+            return True
+        print(result)
+        return True
+    #当出错情况，打印出错信息
+    except Exception as e:
+        print("error occoured:")
+        print(e)
 
 if __name__ == "__main__":
     #如果抓取页面则不进行监听
